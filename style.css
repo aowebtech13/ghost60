@@ -1,0 +1,42 @@
+/* Use Inter font and ensure smooth scrolling */
+html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Essential styles for full-viewport sections */
+.full-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Base state for hidden sections (opacity 0, slight slide down) */
+.section-content {
+    opacity: 0;
+    transform: translateY(30px);
+    /* Set transitions for the reveal effect */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    max-width: 90%;
+    padding: 2rem;
+    /* Tailwind classes are used here for visual style (background, radius, shadow) */
+}
+
+/* Visible state: triggered by Intersection Observer adding the 'is-visible' class */
+.is-visible .section-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Reduced Motion Styling --- */
+/* Media query to disable animations/transitions if system preference is set */
+@media (prefers-reduced-motion: reduce) {
+    .section-content {
+        /* Important to override the transition property entirely for instant snap */
+        transition: none !important; 
+    }
+}

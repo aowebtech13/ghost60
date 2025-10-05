@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joshua's Prototype | Parallax & Observer Demo</title>
+    <!-- Load Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link the custom styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Section 1: Hero -->
+    <section id="section-1" class="full-section bg-gray-900 text-white" 
+             style="background-image: url('/assets/bg-hero-2560.webp');" 
+             data-parallax="0.2">
+        <div class="section-content rounded-xl bg-white bg-opacity-10 backdrop-blur-sm shadow-2xl p-8">
+            <h1 class="text-5xl font-extrabold mb-4">Welcome to the Prototype</h1>
+            <p class="text-xl">Scroll down to see the Intersection Observer reveal in action.</p>
+        </div>
+    </section>
+
+    <!-- Section 2: Key Feature -->
+    <section id="section-2" class="full-section bg-blue-100" 
+             style="background-image: url('https://placehold.co/1920x1080/4f46e5/ffffff?text=Feature+Background');" 
+             data-parallax="0.3">
+        <div class="section-content rounded-xl bg-white bg-opacity-80 shadow-2xl p-8">
+            <h2 class="text-4xl font-bold mb-4 text-indigo-700">Section 2: Clamped Parallax</h2>
+            <p class="text-lg">This section uses a stronger parallax effect (data-parallax="0.3") controlled via `requestAnimationFrame`.</p>
+            <p class="text-sm mt-2 text-gray-600">Note: Parallax is disabled if 'Reduced Motion' is detected.</p>
+        </div>
+    </section>
+
+    <!-- Section 3: 360 Viewer (Conditional Load) -->
+    <section id="section-3" class="full-section bg-indigo-100" 
+             style="background-image: url('https://placehold.co/1920x1080/6366f1/ffffff?text=360+Pano+Area');" 
+             data-parallax="0.1">
+        <div class="section-content rounded-xl bg-white bg-opacity-90 shadow-2xl p-8">
+            <h2 class="text-4xl font-bold mb-6 text-indigo-800">Section 3: Conditional 360 Viewer</h2>
+
+            <!-- This div presence triggers the 360 script loading in app.js -->
+            <div class="gw-pano w-full h-64 md:h-96 bg-gray-200 rounded-lg shadow-inner flex items-center justify-center text-gray-600 border border-indigo-400 border-dashed"
+                 data-src="/assets/pano-4096x2048.jpg">
+                 <p class="text-lg">Placeholder for 360° Viewer (GW Pano element found)</p>
+            </div>
+
+            <p class="mt-4 text-sm text-gray-600">Check the console to see the conditional script load confirmation.</p>
+        </div>
+    </section>
+
+    <!-- Link the Vanilla JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
