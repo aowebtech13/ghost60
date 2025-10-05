@@ -1,42 +1,59 @@
-/* Use Inter font and ensure smooth scrolling */
-html {
-    scroll-behavior: smooth;
+/* --- Global Reset and Setup --- */
+:root {
+    /* Use Inter font */
     font-family: 'Inter', sans-serif;
+    /* Disable smooth scrolling for accessibility, but keep it smooth for general use */
+    scroll-behavior: smooth;
 }
 
-/* Essential styles for full-viewport sections */
-.full-section {
-    height: 100vh;
+/* Ensure sections take up the full available viewport height */
+/* Using 100svh (Small Viewport Height) provides better compatibility on mobile devices (e.g., iOS Safari) */
+.gw-chapter {
+    /* REQUIRED: Full viewport height */
+    height: 100svh;
+    /* Center the content vertically and horizontally */
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    /* Sets up the background to cover the section */
     background-size: cover;
-    background-position: center;
+    background-position: center center;
+    overflow: hidden; /* Important for preventing parallax movement from causing scrollbars */
 }
 
-/* Base state for hidden sections (opacity 0, slight slide down) */
+/* --- Content Reveal and Transition Styling --- */
+
+/* Base state for the inner content before reveal (hidden) */
 .section-content {
-    opacity: 0;
-    transform: translateY(30px);
-    /* Set transitions for the reveal effect */
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    /* Set max width and center card */
     max-width: 90%;
-    padding: 2rem;
-    /* Tailwind classes are used here for visual style (background, radius, shadow) */
+    margin: 0 auto;
+    text-align: center;
+    /* Start position: slightly down and invisible */
+    opacity: 0;
+    transform: translateY(2rem);
+    /* Transition applied only for non-reduced motion users */
+    transition: opacity 1.2s ease-out, transform 0.8s ease-out;
 }
 
-/* Visible state: triggered by Intersection Observer adding the 'is-visible' class */
-.is-visible .section-content {
+/* Target state after IntersectionObserver adds 'is-visible' to the parent section */
+.gw-chapter.is-visible .section-content {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* --- Reduced Motion Styling --- */
-/* Media query to disable animations/transitions if system preference is set */
+
+/* --- Accessibility: Reduced Motion Overrides (Acceptance Check) --- */
+
 @media (prefers-reduced-motion: reduce) {
+    /* 1. Disable all transitions for users preferring reduced motion */
     .section-content {
-        /* Important to override the transition property entirely for instant snap */
-        transition: none !important; 
+        transition: none !important;
     }
+    /* 2. When revealed, immediately snap the content into place */
+    .gw-chapter.is-visible .section-content {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    /* 3. Parallax is disabled via JavaScript, so no CSS override needed here */
 }

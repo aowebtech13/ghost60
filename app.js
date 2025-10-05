@@ -1,6 +1,6 @@
 // Constants and Configuration
 const PARALLAX_MAX_STRENGTH = 0.3;
-// Triggers when 50% of the element's height is above the viewport bottom (0px 0px -50% 0px)
+// Triggers when 50% of the element's height is above the viewport bottom
 const observerRootMargin = '0px 0px -50% 0px'; 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -13,10 +13,8 @@ function load360ViewerScript() {
 
     if (panoElement) {
         // --- Conditional Load Logic ---
-        // In a live environment, the script tag creation/insertion would go here:
-        // const script = document.createElement('script');
-        // script.src = 'path/to/360-viewer.js';
-        // document.head.appendChild(script);
+        // This simulates the lazy-loading of the 360 script (e.g., Krpano or similar)
+        // In production, you would dynamically create and append the script tag here.
 
         console.log("360 Viewer Logic: Element '.gw-pano' found. Hypothetical 360 viewer script is loaded and initialized.");
         
@@ -32,21 +30,24 @@ function load360ViewerScript() {
 
 /**
  * Sets up the Intersection Observer to trigger section reveals.
- * Uses rootMargin to fire when 50% of the element is in view.
+ * Uses rootMargin: -50% to fire when the section's center point enters the viewport.
  */
 function setupIntersectionObserver() {
-    const sections = document.querySelectorAll('section');
+    // Select all required story sections
+    const sections = document.querySelectorAll('.gw-chapter'); 
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-            const content = entry.target.querySelector('.section-content');
+            // Target the content wrapper inside the section
+            const content = entry.target.querySelector('.section-content'); 
             if (content) {
                 if (entry.isIntersecting) {
-                    // Check if reduced motion is preferred before adding the class
+                    // Check if reduced motion is preferred
                     if (prefersReducedMotion) {
-                        // This overrides the CSS transition for an instant snap (works alongside CSS @media query)
+                        // For reduced motion users, force an instant snap-in transition
                         content.style.transition = 'none'; 
                     }
+                    // Add the class that triggers the CSS transition (or snap)
                     entry.target.classList.add('is-visible');
                     // Stop observing once the element is visible
                     observer.unobserve(entry.target); 
@@ -90,15 +91,15 @@ function setupParallax() {
                 // Clamp strength to the specified maximum (0.0 to 0.3)
                 const clampedStrength = Math.min(Math.max(0, strength), PARALLAX_MAX_STRENGTH);
 
-                // Calculate the subtle background movement relative to the scroll position
+                // Calculate the subtle background movement (negative for slow movement)
                 const movement = currentScrollY * clampedStrength * -1;
 
-                // Apply the transform to the background layer (the section element itself)
+                // Apply the transform (good for iOS/Mobile performance)
                 el.style.transform = `translateY(${movement}px)`;
             });
         }
         
-        // Request the next frame
+        // Request the next frame for smooth animation
         requestAnimationFrame(updateParallax);
     }
 
@@ -108,7 +109,7 @@ function setupParallax() {
 }
 
 
-// Wait for the entire page (including all elements) to load before initializing logic
+// Wait for the entire page (including all assets like images) to load before initializing logic
 window.onload = function() {
     load360ViewerScript();
     setupIntersectionObserver();
